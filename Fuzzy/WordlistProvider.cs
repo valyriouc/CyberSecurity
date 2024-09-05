@@ -23,7 +23,7 @@ internal static class WordlistProvider
 
         foreach (string s in await File.ReadAllLinesAsync(wordlist))
         {
-            yield return s;
+            yield return s.Trim();
         }
     }
 
@@ -32,10 +32,10 @@ internal static class WordlistProvider
         using HttpClient client = new HttpClient();
 
         string body = await client.GetStringAsync(wordlist);
-
-        foreach (string item in body.Split(Environment.NewLine))
+        
+        foreach (string item in body.Split("\n"))
         {
-            yield return item;
+            yield return item.Trim();
         }
      }
 }

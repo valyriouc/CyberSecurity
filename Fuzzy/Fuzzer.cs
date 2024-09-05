@@ -21,16 +21,20 @@ internal class Fuzzer : IDisposable
     public async Task FuzzAsync(IAsyncEnumerable<string> wordlist)
     {
         Uri baseUrl = new Uri(args.Url);
-
         await foreach (string w in wordlist)
         {
-            Uri url = new Uri(baseUrl, w);
+            Uri url = new Uri(baseUrl, w); 
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.StatusCode != HttpStatusCode.NotFound)
             {
                 string output = $"{(int)response.StatusCode} - {response.StatusCode} ({url.ToString()})";
                 outputProvider.Output(output);
-            } 
+            }
+            else
+            {
+                //string output = $"Not found - {url.ToString()}";
+                //outputProvider.Output(output); 
+            }
         }
     }
 
@@ -55,7 +59,7 @@ internal class ConsoleOutputProvider : IOutputProvider
     public ConsoleOutputProvider(CmdArgs args)
     {
         Args = args;
-        PrintStart();
+        Console.WriteLine(PrintStart());
     }
     
     private string PrintStart() =>
