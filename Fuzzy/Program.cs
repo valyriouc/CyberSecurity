@@ -15,7 +15,7 @@ internal static class Program
             arguments, 
             contentProvider, 
             outputProvider);
-        await fuzzer.FuzzAsync();
+        await fuzzer.FuzzAsync(cts.Token);
     }
 
     private static IContentProvider FromArgs(CmdArgs args) => args.WType switch
