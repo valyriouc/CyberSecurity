@@ -1,125 +1,59 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
-
-namespace Fuzzy;
-
-internal class Fuzzer : IDisposable
-{
-    private readonly IOutputProvider outputProvider;
-    private readonly HttpClient httpClient;
-    private readonly CmdArgs args;
+﻿using System.Net;
+    using Fuzzy.Content;
+    using Fuzzy.Output;
     
-    public Fuzzer(
-        CmdArgs args,
-        IOutputProvider outputProvider)
+    namespace Fuzzy;
+    
+    internal class Fuzzer : IDisposable
     {
-        this.args = args;
-        this.outputProvider = outputProvider;
-        this.httpClient = new HttpClient();
-    }
-
-    public async Task FuzzAsync(IAsyncEnumerable<string> wordlist)
-    {
-        Uri baseUrl = new Uri(args.Url);
-        await foreach (string w in wordlist)
+        private readonly IOutputProvider outputProvider;
+        private readonly IContentProvider contentProvider;
+        
+        private readonly HttpClient httpClient;
+        private readonly CmdArgs args;
+        
+        public Fuzzer(
+            CmdArgs args,
+            IContentProvider contentProvider,
+            IOutputProvider outputProvider)
         {
-            Uri url = new Uri(baseUrl, w); 
-            HttpResponseMessage response = await httpClient.GetAsync(url);
-            if (response.StatusCode != HttpStatusCode.NotFound)
+            this.args = args;
+            this.contentProvider = contentProvider;
+            this.outputProvider = outputProvider;
+            this.httpClient = new HttpClient();
+        }
+    
+        public async Task FuzzAsync(CancellationToken cancellationToken)
+        {
+            Uri baseUrl = new Uri(args.BaseUrl);
+            await contentProvider.LoadContentAsync(cancellationToken);
+            await FuzzInternalAsync(baseUrl, cancellationToken);
+        }
+
+        private async Task FuzzInternalAsync(Uri baseUrl, CancellationToken cancellationToken)
+        {
+            foreach (string part in contentProvider.GetPathParts())
             {
-                string output = $"{(int)response.StatusCode} - {response.StatusCode} ({url.ToString()})";
-                outputProvider.Output(output);
+                Uri url = new Uri(baseUrl, part);
+                HttpResponseMessage response = await httpClient.GetAsync(url, cancellationToken);
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.OK:
+                        await FuzzInternalAsync(url, cancellationToken);
+                        break;
+                    case HttpStatusCode.NotFound:
+                        // TODO: Maybe some logging for later 
+                        break;
+                    default:
+                        outputProvider.Output($"{(int)response.StatusCode} - {response.StatusCode} ({url})");
+                        break;
+                }
             }
-            else
-            {
-                //string output = $"Not found - {url.ToString()}";
-                //outputProvider.Output(output); 
-            }
         }
-    }
-
-    public void Dispose()
-    {
-        outputProvider.Dispose();
-        this.httpClient.Dispose();
-    }
-}
-
-internal interface IOutputProvider : IDisposable
-{
-    public CmdArgs Args { get; }
     
-    public void Output(string item);
-}
-
-internal class ConsoleOutputProvider : IOutputProvider
-{
-    public CmdArgs Args { get; }
-    
-    public ConsoleOutputProvider(CmdArgs args)
-    {
-        Args = args;
-        Console.WriteLine(PrintStart());
-    }
-    
-    private string PrintStart() =>
-        $"""
-         --------------------------------------------
-         <<<<<<<<<<<     A new scan      >>>>>>>>>>>>
-         --------------------------------------------
-         || Target: {Args.Url}                     
-         || Wordlist: {Args.WordList}
-         --------------------------------------------
-         """;
-    
-    public void Output(string item)
-    {
-        Console.WriteLine(item);
-    }
-
-    public void Dispose()
-    {
-        // TODO release managed resources here
-    }
-}
-
-internal class FileOutputProvider : IOutputProvider
-{
-    private readonly StreamWriter streamWriter;
-    public CmdArgs Args { get; }
-    
-    public FileOutputProvider(CmdArgs args)
-    {
-        if (!File.Exists(args.OutputPath))
+        public void Dispose()
         {
-            streamWriter = new StreamWriter(File.Create(args.OutputPath));
+            outputProvider.Dispose();
+            this.httpClient.Dispose();
         }
-        else
-        {
-            streamWriter = new StreamWriter(File.Open(args.OutputPath, FileMode.Append));
-        }
-
-        Args = args;
-        PrintStart();
     }
-
-    public void Output(string item)
-    {
-        streamWriter.WriteLine(item);
-    }
-
-    private string PrintStart() =>
-        $"""
-        --------------------------------------------
-        <<<<<<<<<<<     A new scan      >>>>>>>>>>>>
-        --------------------------------------------
-        || Target: {Args.Url}                     
-        || Wordlist: {Args.WordList}
-        --------------------------------------------
-        """;
-
-    public void Dispose()
-    {
-        streamWriter.Dispose();
-    }
-}

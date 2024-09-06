@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuzzy", "Fuzzy\Fuzzy.csproj", "{55D2780E-10BD-49AA-A4CE-5583E3CDDB4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyTests", "FuzzyTests\FuzzyTests.csproj", "{81A4E973-07B0-46A6-B678-68396C25ABFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{55D2780E-10BD-49AA-A4CE-5583E3CDDB4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55D2780E-10BD-49AA-A4CE-5583E3CDDB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55D2780E-10BD-49AA-A4CE-5583E3CDDB4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81A4E973-07B0-46A6-B678-68396C25ABFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A4E973-07B0-46A6-B678-68396C25ABFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A4E973-07B0-46A6-B678-68396C25ABFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A4E973-07B0-46A6-B678-68396C25ABFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

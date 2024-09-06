@@ -1,0 +1,14 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1b968b50_002D5f39_002D41c7_002D996a_002D5358730754df/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DetectCorrectLineEnding #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::81A4E973-07B0-46A6-B678-68396C25ABFE::net8.0::FuzzyTests.StringExtensionsShould.DetectCorrectLineEnding&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4546fee0_002Ddd79_002D422a_002D8f4c_002Da8dcb107c1ce/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DetectCorrectLineEnding" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::81A4E973-07B0-46A6-B678-68396C25ABFE::net8.0::FuzzyTests.StringExtensionsShould.DetectCorrectLineEnding&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::81A4E973-07B0-46A6-B678-68396C25ABFE::net8.0::FuzzyTests.StringExtensionsShould.DetectCorrectLineEndingWithinLongString&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::81A4E973-07B0-46A6-B678-68396C25ABFE::net8.0::FuzzyTests.StringExtensionsShould.DetectCorrectArgType&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::81A4E973-07B0-46A6-B678-68396C25ABFE::net8.0::FuzzyTests.StringExtensionsShould.DetectCorrectWordlistType&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

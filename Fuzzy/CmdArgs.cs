@@ -4,7 +4,7 @@ namespace Fuzzy;
 
 internal class CmdArgs
 {
-    public string Url { get; private set; }
+    public string BaseUrl { get; private set; }
     
     public string WordList { get; private set; }
 
@@ -30,7 +30,7 @@ internal class CmdArgs
                     OutputPath = args[i + 1];
                     break;
                 case ArgType.Url:
-                    Url = args[i + 1];
+                    BaseUrl = args[i + 1];
                     break;
                 case ArgType.Wordlist:
                     WordList = args[i + 1];
@@ -46,7 +46,7 @@ internal class CmdArgs
 
     private void Validate()
     {
-        if (string.IsNullOrWhiteSpace(Url))
+        if (string.IsNullOrWhiteSpace(BaseUrl))
         {
             throw new ArgumentException("Url is required!");
         }

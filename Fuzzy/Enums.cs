@@ -1,14 +1,15 @@
 ﻿namespace Fuzzy;
 
-internal enum ArgType
+public enum ArgType
 {
     Url,
     Wordlist,
     Output,
+    Recursion,
     WType
 }
 
-internal enum WordlistType
+public enum WordlistType
 {
     File,
     Url,
