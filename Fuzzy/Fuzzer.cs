@@ -1,5 +1,6 @@
 ﻿using System.Net;
-    using Fuzzy.Content;
+using System.Threading.Tasks.Sources;
+using Fuzzy.Content;
     using Fuzzy.Output;
     
     namespace Fuzzy;
@@ -35,20 +36,21 @@
             foreach (string part in contentProvider.GetPathParts())
             {
                 Uri url = new Uri(baseUrl, part);
-                HttpResponseMessage response = await httpClient.GetAsync(url, cancellationToken);
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        await FuzzInternalAsync(url, cancellationToken);
-                        break;
-                    case HttpStatusCode.NotFound:
-                        // TODO: Maybe some logging for later 
-                        break;
-                    default:
-                        outputProvider.Output($"{(int)response.StatusCode} - {response.StatusCode} ({url})");
-                        break;
-                }
+                var response = await httpClient.GetAsync(url, cancellationToken);
+                
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                            // TODO: Maybe some logging for later 
+                            break;
+                        default:
+                            outputProvider.Output($"{(int)response.StatusCode} - {response.StatusCode} ({response.RequestMessage.RequestUri})");
+                            await FuzzInternalAsync(response.RequestMessage.RequestUri, cancellationToken);
+                            break;
+                    }
+                
             }
+            
         }
     
         public void Dispose()
